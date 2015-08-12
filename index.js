@@ -6,5 +6,7 @@ yandex.callback();
 
 $('#yandex').click(function (e) {
     e.preventDefault();
-    yandex.getToken();
+    yandex.getToken(function (token) {
+        console.log("I got the token: ", token);
+    });
 });
