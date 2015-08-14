@@ -82,20 +82,10 @@ oauth.reddit = new JSO({
 oauth.se = new JSO({
     client_id: '5395',
     redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://stackexchange.com/oauth/dialog'
+    authorization: 'https://stackexchange.com/oauth/dialog',
+    scopes: { request: ["identity"]}
 });
 
-oauth.linkedin = new JSO({
-    client_id: '77x3lmwsl0jm23',
-    redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://www.linkedin.com/uas/oauth2/authorization'
-});
-
-oauth.imgur = new JSO({
-    client_id: '25f8af90453ce51',
-    redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://api.imgur.com/oauth2/authorize'
-});
 oauth.yandex.callback();
 
 for (service in oauth) {
