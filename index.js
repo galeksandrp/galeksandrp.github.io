@@ -85,7 +85,6 @@ oauth.se = new JSO({
     authorization: 'https://stackexchange.com/oauth/dialog',
     scopes: { request: ["identity"]}
 });
-
 oauth.yandex.callback();
 
 for (service in oauth) {
