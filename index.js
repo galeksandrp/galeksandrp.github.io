@@ -72,6 +72,30 @@ oauth.foursquare = new JSO({
     redirect_uri: "https://galeksandrp.github.io",
     authorization: 'https://foursquare.com/oauth2/authorize'
 });
+
+oauth.reddit = new JSO({
+    client_id: 'v7jW1C3OV-Y8kA',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://www.reddit.com/api/v1/authorize'
+});
+
+oauth.se = new JSO({
+    client_id: '5395',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://stackexchange.com/oauth/dialog'
+});
+
+oauth.linkedin = new JSO({
+    client_id: '77x3lmwsl0jm23',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://www.linkedin.com/uas/oauth2/authorization'
+});
+
+oauth.imgur = new JSO({
+    client_id: '25f8af90453ce51',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://api.imgur.com/oauth2/authorize'
+});
 oauth.yandex.callback();
 
 for (service in oauth) {
