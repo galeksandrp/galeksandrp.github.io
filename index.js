@@ -55,28 +55,10 @@ oauth.instagram = new JSO({
     authorization: 'https://instagram.com/oauth/authorize'
 });
 
-oauth.vimeo = new JSO({
-    client_id: '5feac1737a66b1ea904d9711188030e1adbfd5dd',
-    redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://api.vimeo.com/oauth/authorize'
-});
-
-oauth.dailymotion = new JSO({
-    client_id: '0a47e42a3aef3a73242c',
-    redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://www.dailymotion.com/oauth/authorize'
-});
-
 oauth.foursquare = new JSO({
     client_id: 'JKMKVHCEQN5BZWUMLSPXYMTYHBU2SJPRBEXKKPBJ2TE0A32E',
     redirect_uri: "https://galeksandrp.github.io",
     authorization: 'https://foursquare.com/oauth2/authorize'
-});
-
-oauth.reddit = new JSO({
-    client_id: 'v7jW1C3OV-Y8kA',
-    redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://www.reddit.com/api/v1/authorize'
 });
 
 oauth.se = new JSO({
