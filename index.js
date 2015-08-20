@@ -67,6 +67,12 @@ oauth.se = new JSO({
     authorization: 'https://stackexchange.com/oauth/dialog',
     scopes: { request: ["identity"]}
 });
+
+oauth.soundcloud = new JSO({
+    client_id: 'ab84c960be9df98238ddad588fbfd19d',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://soundcloud.com/connect'
+});
 oauth.yandex.callback();
 
 for (service in oauth) {
