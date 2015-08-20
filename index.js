@@ -64,14 +64,52 @@ oauth.foursquare = new JSO({
 oauth.se = new JSO({
     client_id: '5395',
     redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://stackexchange.com/oauth/dialog',
-    scopes: { request: ["identity"]}
+    authorization: 'https://stackexchange.com/oauth/dialog'
 });
 
 oauth.soundcloud = new JSO({
     client_id: 'ab84c960be9df98238ddad588fbfd19d',
     redirect_uri: "https://galeksandrp.github.io",
     authorization: 'https://soundcloud.com/connect'
+});
+
+oauth.dailymotion = new JSO({
+    client_id: '0a47e42a3aef3a73242c',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://www.dailymotion.com/oauth/authorize'
+});
+
+oauth.amazon = new JSO({
+    client_id: 'amzn1.application-oa2-client.926f5cc7d32a47a29a14e42020a19483',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://www.amazon.com/ap/oa',
+    scopes: { request: ["profile"]}
+});
+
+oauth.imgur = new JSO({
+    client_id: '25f8af90453ce51',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://api.imgur.com/oauth2/authorize'
+});
+
+oauth.reddit = new JSO({
+    client_id: 'Zno0N0yNCNNS-A',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://www.reddit.com/api/v1/authorize',
+    scopes: { request: ["identity"]}
+});
+
+oauth.google = new JSO({
+    client_id: '893544438802-504jj931rhe33gkkdd1drtaiae0llpe9.apps.googleusercontent.com',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://accounts.google.com/o/oauth2/auth',
+    scopes: { request: ["openid", "email"]}
+});
+
+oauth.twitch = new JSO({
+    client_id: '7ic8qlzky9pn3f7v9wz388synbdy64i',
+    redirect_uri: "https://galeksandrp.github.io",
+    authorization: 'https://api.twitch.tv/kraken/oauth2/authorize'
 });
 oauth.yandex.callback();
 
