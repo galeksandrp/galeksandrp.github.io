@@ -1,3 +1,4 @@
+//Test
 var oauth = {};
 
 oauth.yandex = new JSO({
