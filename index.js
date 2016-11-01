@@ -46,7 +46,8 @@ oauth.vk = new JSO({
 oauth.bitbucket = new JSO({
     client_id: 'k28MBYhr4QpUXWxfdm',
     redirect_uri: "https://galeksandrp.github.io",
-    authorization: 'https://bitbucket.org/site/oauth2/authorize'
+    authorization: 'https://bitbucket.org/site/oauth2/authorize',
+    scopes: { request: ["repository"]}
 });
 
 oauth.instagram = new JSO({
