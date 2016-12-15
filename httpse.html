@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>httpse</title>
+</head>
+<body>
+	<form id="url" action="https://github.com/login/oauth/authorize">
+		<input type="hidden" name="client_id" value="6bc4ee71f7bf1c491e28">
+		Input domain: <input id="state" type="text" name="state">
+		<input type="hidden" name="scope" value="public_repo">
+		<input type="submit" value="Submit"><br>
+		<input type="checkbox" checked name="scope" value="public_repo,user:email">Include email in commit (if not checked, it will be replaced by username@users.noreply.github.com)<br>
+	</form>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="background.js"></script>
+</body>
+</html>
