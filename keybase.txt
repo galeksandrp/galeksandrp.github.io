@@ -6,18 +6,18 @@ I hereby claim:
 
   * I am an admin of https://galeksandrp.github.io
   * I am galeksandrp (https://keybase.io/galeksandrp) on keybase.
-  * I have a public key with fingerprint 27CC ADD9 FF21 652D 99FC  A487 36D8 AC5B 32DC 6B8B
+  * I have a public key with fingerprint 0B58 92A8 EE87 4BD9 C7E2  26EA 7546 5C70 4392 E07F
 
 To do so, I am signing this object:
 
 {
     "body": {
         "key": {
-            "eldest_kid": "0101f0af15ae33e360e843373ca6e07c5a31636ed20c2e18bf7313ca11710ea333980a",
-            "fingerprint": "27ccadd9ff21652d99fca48736d8ac5b32dc6b8b",
+            "eldest_kid": "0101d69b5c138976dd96e98c32275ea95ad1b4f59ef9b113abf4abec18fbeb7391580a",
+            "fingerprint": "0b5892a8ee874bd9c7e226ea75465c704392e07f",
             "host": "keybase.io",
-            "key_id": "36d8ac5b32dc6b8b",
-            "kid": "0101f0af15ae33e360e843373ca6e07c5a31636ed20c2e18bf7313ca11710ea333980a",
+            "key_id": "75465c704392e07f",
+            "kid": "0101d69b5c138976dd96e98c32275ea95ad1b4f59ef9b113abf4abec18fbeb7391580a",
             "uid": "ea9c8b10855ef554d60d429685ffbf19",
             "username": "galeksandrp"
         },
@@ -28,10 +28,10 @@ To do so, I am signing this object:
         "type": "web_service_binding",
         "version": 1
     },
-    "ctime": 1480367887,
+    "ctime": 1495746852,
     "expire_in": 157680000,
-    "prev": "8631320d91cbe9fa5d0d71245ed688385cbb38f90ed897f36c34d076512e9795",
-    "seqno": 9,
+    "prev": "d030cb193a29259524d0f34dc1b13ba58cab2d5413094abe2ebe85e74ee3e547",
+    "seqno": 28,
     "tag": "signature"
 }
 
@@ -40,23 +40,23 @@ which yields the signature:
 -----BEGIN PGP MESSAGE-----
 Version: GnuPG v1
 
-owGtUltIFFEYXs3E7MIaFgVbyPTWWpwzZ+fMmSUyyqKHwm5gZbCdmXNmd9x1Zp0d
-t2JLiChKC6SshG6UkokFYjcKEh/EiIiKpBsSElRUdHuKsqIzVk/12Hk5nPN/3/d/
-38/fMnlcID8PPz5fIw8nm/Nuv9YD6xecKs1JusO2SdGclORjF08xnvFiSYtJUQlA
-AE1ATahQjhBHGHASQUhFBsUcqIZCEcQIcyYDQ+aQ6KaKoChCqELAKUJII4BK5ZJp
-2XHupl3L9oSsrBoGZUwzTRliRWaaZho0QlSEGaGGoiOZGVgnuiAmnIzPEOZ0muHz
-LUf8iUdszN4/8P/Zd8OYHKeaQXQIiKJwU1EiDAMWkTVMFNPUTaj5wAx3bVrHBTpO
-UzyZoTZz09KOckkUspbB/dn6Yf4GzY9bXqJB/5Ut7TqeYzgpAUl4XjoT9SW8bWmf
-s4Xrsd9qMd2ymZipYGS5m7EcW4pCgTQ8y5eHEQIQVglRyyW+NW25PGb5CEXFBIjj
-92E8KzQJFsFlwDRo6FwzqcIAU6EcUTjDhCCiGLqOiKkBzoimmggbKMKAihUoc03V
-FMkPWG87UlQTPmlcSGasuE29BpdLO4r35YUKAnn5gcLx+f62BYonBP+sYB0vChx4
-uKSiP3imvf7NiQvnji5KBPqrTo44gyVrQ6nLD6Zm33mjA3urBhrf9zYde1DyvHv8
-utavD1ve3S040vMpPa46vHnDqjl3E4s3RrqC08ON21eWhaf17az41tYzy/7RWNib
-a97Tcdx7eTXYee9FcH9RCPYlJ8wt+La08nRPpZ6aPDVl1fa3vHr6ffjg55Ha7Ixd
-gSnojlWXGrz0atmK+DqNLl+IS+Oj6TWH8qeET08qelbTW3Hx7I1bH266xWUF3Tcm
-dvWOPM51Xot9edTyxLteO7S7+nyfM3RpoP5K7uPM4ebDbZtmN21aMfChchXoyA0N
-bT4wOg9Oumq13g/xjtVt7YVvn/0E
-=0D1x
+owGtkltIFUEYx8/RbgpdhJQ0I9wou4juzO6c3Tn5UmIRvWQ9mCWddna+PW7qnuPZ
+PaeLaTfLCozojklEF3uUICoogpToYoEg3byEoiFFQdBFish2rZ7qsXkZZub//83/
++/iOTk32JfnjK8qjRccGdvk73zBfWe6qRbUCi/DtQrBWqITxDao42E6o0uRCUBCR
+iHiAMqIjSaVKgHMaAKrqEsYKAY0SjSMmG4SCQRlCksYMWWOgI9VgwBSJIqKKmpAn
+GKYVhlg0ZlqOh2VEpVhTAVRFZpzqCmAcAE0hcoDoiihLFIOoGK6xImJ7Djcc02zI
+NyPunXsIjcf7h/4/546P41yHrjIkqoSAQYjMAyKXMQ2oxDCYgagntCFmadXgqsNa
+FVTamsVjUaEuT3AfEqYOXm+9Yv4W5YdNpyLOftUWjUWciB6pciUVjhO1gx7C2R71
+PFuBhX7TQsy0uNtT15GAmG1GLCGIXKXumB4eyZQospsP5wmwLWrGIGR6CqIEVNFd
+3j8ACZfJRUnUGaKShikmlGCZi4Ykcx0xJDGNqLrGMCcykkTqtQgDA5WAIgNIQGRF
+8AqssSJCEKtuUC3sMm0zbGlOPAZCXeohf/YEnz/JN2likjduvtSUGX9msPDTFN+7
+0aIvjY83T+/SD685FR0No/UrR3prcp//4EUHSldt6jw7Z+g5rUnODrUfvP/uxoaN
+V4dWT28bzU959hUP3y4vmVtW0jJfPf0mDce7Bm41Pa1/mHXj9sh761rm1DP1O1tW
+44YmKVFkrOwoE/CSF5nDa69kNFhPXx7BSR0ppbO/DbeeOa7qd2tfdZQUJ3qbO+eV
++i+PXay3u6dlPEz/+GTR6UNtu0+klr/c05Oz7maD0lM75cLCma2dy/ZlX+uuXlyw
+PH0ordnYcufR0qN2f+/bplk9J+d/7vuA9o71Tr7enTPS93mw+fs9sb34fF11zYOC
+r3r/nIwFGfsvvcgs3HEuufH14HDWTw==
+=kZLD
 -----END PGP MESSAGE-----
 
 And finally, I am proving ownership of this host by posting or
