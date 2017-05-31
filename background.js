@@ -1,3 +1,7 @@
+if (localStorage.template) $('#'+localStorage.template).click();
+$('[name="branch"]').change(function(){
+localStorage.template = $(this).val();
+});
 var queries = {};
 location.search.substring(1).split('&').forEach(function(query) {
   var parts = query.split('=');
@@ -17,6 +21,7 @@ $('#url').submit(function() {
         data: JSON.stringify({
           "state": $('#state').val(),
           "login": bodyFork.owner.login,
+          "branch": $('[name="branch"]:checked').val(),
           "request": {
             "message": $('#state').val() + " Override the commit message: this is an api request",
             "branch": "template-api",
