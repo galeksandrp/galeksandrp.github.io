@@ -1,0 +1,67 @@
+==================================================================
+https://keybase.io/galeksandrp
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://galeksandrp.gq
+  * I am galeksandrp (https://keybase.io/galeksandrp) on keybase.
+  * I have a public key with fingerprint 0B58 92A8 EE87 4BD9 C7E2  26EA 7546 5C70 4392 E07F
+
+To do so, I am signing this object:
+
+{
+    &quot;body&quot;: {
+        &quot;key&quot;: {
+            &quot;eldest_kid&quot;: &quot;0101d69b5c138976dd96e98c32275ea95ad1b4f59ef9b113abf4abec18fbeb7391580a&quot;,
+            &quot;fingerprint&quot;: &quot;0b5892a8ee874bd9c7e226ea75465c704392e07f&quot;,
+            &quot;host&quot;: &quot;keybase.io&quot;,
+            &quot;key_id&quot;: &quot;75465c704392e07f&quot;,
+            &quot;kid&quot;: &quot;0101d69b5c138976dd96e98c32275ea95ad1b4f59ef9b113abf4abec18fbeb7391580a&quot;,
+            &quot;uid&quot;: &quot;ea9c8b10855ef554d60d429685ffbf19&quot;,
+            &quot;username&quot;: &quot;galeksandrp&quot;
+        },
+        &quot;service&quot;: {
+            &quot;hostname&quot;: &quot;galeksandrp.gq&quot;,
+            &quot;protocol&quot;: &quot;https:&quot;
+        },
+        &quot;type&quot;: &quot;web_service_binding&quot;,
+        &quot;version&quot;: 1
+    },
+    &quot;ctime&quot;: 1500408307,
+    &quot;expire_in&quot;: 157680000,
+    &quot;prev&quot;: &quot;8d70c2d9de45baf7be269df0fd8e1426ea3fbc22e68adeec5866a58b973f9bcd&quot;,
+    &quot;seqno&quot;: 45,
+    &quot;tag&quot;: &quot;signature&quot;
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1
+
+owGtUltsTEEY3i0aJGgq6q4cQhObOrc5Z2Yj4i4kbOJWQqyZM//ZHl3nrN3Tlm5k
+K24lEVupxOXJJfogkkqIoBG3VlXqQSKeiIS4hnpCBWtOwxOP5mUy83/fN9//zZ8f
+NiBUFK5dvDG14MjzXPjBWxZa7zpfsxLz+A4pmpVqoH+DJIeMH69xuBSVZEVWuEEY
+shQNE9PgnBhAsKWpqomAEkS5wnQbEbAJUxSNMlunDCwF2wyYqREFYZlKEcl23ASk
+U2nH9QNZhjBRKQbAps44sUxQVQOoiXQDWaasa0QF2bQFsdrLBAxhjtEMVDqeuBOH
+eL+9f+D/s+/afjnBsDBTZIwQ2Ajp3JC5rhIDI9tmtkICYAbSLt0KAp2gSajJUJen
+U9LOiCQKdY4FQbZBM3+DKhPbhEAq7fme5SVFrdr3U5lowPV3pAJwPbD4b5k4c1wu
+whSMOkhnHM+VoopAWr4T6CpIlnUZa7IZkWB7yklD3AkQyDSwLFbwDtQJScw3mbKl
+csJBR4zaJgPVINyWbY5B0YPf0GxmqSoYmHIAC2HDoAgzYmoiM4tLQWfbXE+K6kgY
+pQkhmnESLvVr0yDtHHogPGFgKFwUKh5UFMxZaOiQkj/Dp/QMDr1YlpdOzrvSmMs3
+FEj3uVfKoTPlP8acGLn0/qnhXsmo4kRV5Ed5aY3bdvheU/YjPrWOdl7IPnt8sbBl
+y/urnVeUNcm+d7HNLXunPMz1ftIKM5PH449mt97e87X3TqSlvdDS2vHt9eO+JQ/X
+to3gP5P5iw0zWrtWrmmaE9sYa+6ruH7z2JvK+onj13ZtaAwPPz6afshGby26W+Ic
+jEzfp86a/3zFhq6sUdbgN00r3R3Knz3dWFXRfa224tL6vljq0GTUU7z3wJeFtGzq
+6ub6z/tziZ4b7e8XrnrpduwZuGTscqh+OunL5ddt51/1dn7v3jV3EJQ3NJ8vZTnz
+ybyjsRG3FhTQuF8=
+=VTo2
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/galeksandrp
+
+==================================================================
