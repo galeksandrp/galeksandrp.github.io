@@ -4,9 +4,6 @@
 # Figure out if client is 64-bit capable
 cpuid --ext 29 && set cpuarch x86_64 || set cpuarch i686
 
-# allow only trusted images
-imgtrust
-
 # initial options
 set release 2020.12.01
 set extrabootoptions ip=dhcp net.ifnames=0 BOOTIF=01-${netX/mac}
