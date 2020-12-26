@@ -1,0 +1,1642 @@
+#!ipxe
+
+
+# Figure out if client is 64-bit capable
+cpuid --ext 29 && set cpuarch x86_64 || set cpuarch i686
+
+# allow only trusted images
+imgtrust
+
+# initial options
+set release 2020.12.01
+set extrabootoptions ip=dhcp net.ifnames=0 BOOTIF=01-${netX/mac}
+set countrycode
+
+:main
+iseq ${cpuarch} x86_64 && goto main_x86_64 || goto main_i686
+
+:main_x86_64
+menu Arch Linux Netboot
+item --gap Settings
+item --gap Architecture: x86_64
+item set_release Release: ${release}
+isset ${mirrorurl} && item set_mirror Mirror: ${mirrorurl} || item set_mirror Choose a mirror
+item set_options Boot options: ${extrabootoptions}
+item
+isset ${mirrorurl} && item boot Boot Arch Linux || item --gap Boot Arch Linux
+item shell Drop to iPXE shell
+item reboot Reboot
+item exit Exit iPXE
+isset ${mirrorurl} && choose --default set_options selected || choose --default set_mirror selected || goto shell
+goto ${selected} || goto main
+
+:main_i686
+menu Arch Linux Netboot
+item --gap ERROR: i686 is no longer supported!
+item shell Drop to iPXE shell
+item reboot Reboot
+item exit Exit iPXE
+choose --default shell selected || goto shell
+goto ${selected} || goto main
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+goto main
+
+:reboot
+reboot
+
+:exit
+exit
+
+:set_release
+menu Arch Linux Netboot: Select Release
+item back back
+item
+item --gap Available releases:
+item 2020.12.01 2020.12.01
+item 2020.11.01 2020.11.01
+item 2020.10.01 2020.10.01
+
+choose selected || goto main
+iseq ${selected} back && goto main ||
+set release ${selected}
+goto main
+
+:set_mirror
+goto select_mirror_country
+
+:select_mirror_country
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Custom Configuration:
+item custom Enter mirror URL
+item
+item --gap Select Mirror By Country:
+
+
+item 00 Global
+
+
+
+item AU Australia
+
+
+
+item AT Austria
+
+
+
+item BD Bangladesh
+
+
+
+item BY Belarus
+
+
+
+item BE Belgium
+
+
+
+item BA Bosnia and Herzegovina
+
+
+
+item BR Brazil
+
+
+
+item BG Bulgaria
+
+
+
+item CA Canada
+
+
+
+item CL Chile
+
+
+
+item CN China
+
+
+
+item CO Colombia
+
+
+
+item HR Croatia
+
+
+
+item CZ Czechia
+
+
+
+item DK Denmark
+
+
+
+item EC Ecuador
+
+
+
+item FI Finland
+
+
+
+item FR France
+
+
+
+item GE Georgia
+
+
+
+item DE Germany
+
+
+
+item GR Greece
+
+
+
+item HK Hong Kong
+
+
+
+item HU Hungary
+
+
+
+item IS Iceland
+
+
+
+item IN India
+
+
+
+item ID Indonesia
+
+
+
+item IR Iran
+
+
+
+item IE Ireland
+
+
+
+item IL Israel
+
+
+
+item IT Italy
+
+
+
+item JP Japan
+
+
+
+item KZ Kazakhstan
+
+
+
+item KE Kenya
+
+
+
+item LV Latvia
+
+
+
+item LT Lithuania
+
+
+
+item LU Luxembourg
+
+
+
+item MD Moldova
+
+
+
+item NL Netherlands
+
+
+
+item NC New Caledonia
+
+
+
+item NZ New Zealand
+
+
+
+item MK North Macedonia
+
+
+
+item NO Norway
+
+
+
+item PK Pakistan
+
+
+
+item PY Paraguay
+
+
+
+item PH Philippines
+
+
+
+item PL Poland
+
+
+
+item PT Portugal
+
+
+
+item RO Romania
+
+
+
+item RU Russia
+
+
+
+item RS Serbia
+
+
+
+item SG Singapore
+
+
+
+item SK Slovakia
+
+
+
+item SI Slovenia
+
+
+
+item ZA South Africa
+
+
+
+item KR South Korea
+
+
+
+item ES Spain
+
+
+
+item SE Sweden
+
+
+
+item CH Switzerland
+
+
+
+item TW Taiwan
+
+
+
+item TH Thailand
+
+
+
+item TR Turkey
+
+
+
+item UA Ukraine
+
+
+
+item GB United Kingdom
+
+
+
+item US United States
+
+
+
+item VN Vietnam
+
+
+isset ${countrycode} && choose --default ${countrycode} selected || choose selected || goto main
+iseq ${selected} back && goto main ||
+iseq ${selected} custom && goto enter_mirror_url ||
+set countrycode ${selected}
+goto select_mirror_url
+
+:enter_mirror_url
+set countrycode
+echo Enter the mirror URL including the trailing slash.
+echo Example: http://some.host/archlinux/
+echo
+echo -n Mirror URL: ${} && read mirrorurl || goto select_mirror_country
+goto main
+
+:select_mirror_url
+goto select_mirror_url_${countrycode} || goto select_mirror_country
+
+
+
+:select_mirror_url_00
+set countryname Global
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.evowise.com/archlinux/ evowise.com
+item http://mirror.rackspace.com/archlinux/ rackspace.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_AU
+set countryname Australia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.digitalpacific.com.au/ digitalpacific.com.au
+item http://ftp.iinet.net.au/pub/archlinux/ iinet.net.au
+item http://mirror.internode.on.net/pub/archlinux/ internode.on.net
+item http://mirror.launtel.net.au/repo/arch/ launtel.net.au
+item http://arch.lucassymons.net/ lucassymons.net
+item http://syd.mirror.rackspace.com/archlinux/ rackspace.com
+item http://ftp.swin.edu.au/archlinux/ swin.edu.au
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_AT
+set countryname Austria
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.digitalnova.at/archlinux/ digitalnova.at
+item http://mirror.easyname.at/archlinux/ easyname.at
+item http://mirror.reisenbauer.ee/archlinux/ reisenbauer.ee
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BD
+set countryname Bangladesh
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.xeonbd.com/archlinux/ xeonbd.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BY
+set countryname Belarus
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.byfly.by/pub/archlinux/ byfly.by
+item http://mirror.datacenter.by/pub/archlinux/ datacenter.by
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BE
+set countryname Belgium
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.cu.be/ archlinux.cu.be
+item http://archlinux.mirror.kangaroot.net/ kangaroot.net
+item http://mirror.tiguinet.net/arch/ tiguinet.net
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BA
+set countryname Bosnia and Herzegovina
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.ba/ mirror.ba
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BR
+set countryname Brazil
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://br.mirror.archlinux-br.org/ archlinux-br.org
+item http://archlinux.c3sl.ufpr.br/ c3sl.ufpr.br
+item http://linorg.usp.br/archlinux/ linorg.usp.br
+item http://archlinux.pop-es.rnp.br/ pop-es.rnp.br
+item http://mirror.ufam.edu.br/archlinux/ ufam.edu.br
+item http://mirror.ufscar.br/archlinux/ ufscar.br
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_BG
+set countryname Bulgaria
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.host.ag/archlinux/ host.ag
+item http://mirrors.uni-plovdiv.net/archlinux/ uni-plovdiv.net
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CA
+set countryname Canada
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.cedille.club/archlinux/ cedille.club
+item http://archlinux.mirror.colo-serv.net/ colo-serv.net
+item http://mirror.csclub.uwaterloo.ca/archlinux/ csclub.uwaterloo.ca
+item http://mirror2.evolution-host.com/archlinux/ evolution-host.com
+item http://mirror.its.dal.ca/archlinux/ its.dal.ca
+item http://muug.ca/mirror/archlinux/ muug.ca
+item http://archlinux.mirror.rafal.ca/ rafal.ca
+item http://mirror.scd31.com/arch/ scd31.com
+item http://mirror.sergal.org/archlinux/ sergal.org
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CL
+set countryname Chile
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.anquan.cl/archlinux/ anquan.cl
+item http://mirror.archlinux.cl/ archlinux.cl
+item http://mirror1.cl.netactuate.com/archlinux/ netactuate.com
+item http://mirror.ufro.cl/archlinux/ ufro.cl
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CN
+set countryname China
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.163.com/archlinux/ 163.com
+item http://mirrors.bfsu.edu.cn/archlinux/ bfsu.edu.cn
+item http://mirrors.cqu.edu.cn/archlinux/ cqu.edu.cn
+item http://mirrors.dgut.edu.cn/archlinux/ dgut.edu.cn
+item http://mirrors.hit.edu.cn/archlinux/ hit.edu.cn
+item http://mirror.lzu.edu.cn/archlinux/ lzu.edu.cn
+item http://mirrors.neusoft.edu.cn/archlinux/ neusoft.edu.cn
+item http://mirrors.nju.edu.cn/archlinux/ nju.edu.cn
+item http://mirror.redrock.team/archlinux/ redrock.team
+item http://mirrors.tuna.tsinghua.edu.cn/archlinux/ tuna.tsinghua.edu.cn
+item http://mirrors.ustc.edu.cn/archlinux/ ustc.edu.cn
+item http://mirrors.zju.edu.cn/archlinux/ zju.edu.cn
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CO
+set countryname Colombia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.udenar.edu.co/archlinux/ udenar.edu.co
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_HR
+set countryname Croatia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.iskon.hr/ iskon.hr
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CZ
+set countryname Czechia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.dkm.cz/archlinux/ dkm.cz
+item http://ftp.linux.cz/pub/linux/arch/ fi.muni.cz
+item http://ftp.fi.muni.cz/pub/linux/arch/ fi.muni.cz
+item http://gluttony.sin.cvut.cz/arch/ gluttony.sin.cvut.cz
+item http://mirrors.nic.cz/archlinux/ nic.cz
+item http://ftp.sh.cvut.cz/arch/ sh.cvut.cz
+item http://mirror.vpsfree.cz/archlinux/ vpsfree.cz
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_DK
+set countryname Denmark
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.dotsrc.org/archlinux/ dotsrc.org
+item http://mirror.one.com/archlinux/ one.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_EC
+set countryname Ecuador
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.cedia.org.ec/archlinux/ cedia.org.ec
+item http://mirror.espoch.edu.ec/archlinux/ espoch.edu.ec
+item http://mirror.uta.edu.ec/archlinux/ uta.edu.ec
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_FI
+set countryname Finland
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://arch.mirror.far.fi/ far.fi
+item http://mirror.hosthink.net/archlinux/ hosthink.net
+item http://mirror.pseudoform.org/ pseudoform.org
+item http://mirror.wuki.li/archlinux/ wuki.li
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_FR
+set countryname France
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.de-labrusse.fr/ archlinux.de-labrusse.fr
+item http://mirror.archlinux.ikoula.com/archlinux/ archlinux.ikoula.com
+item http://archlinux.mirrors.benatherton.com/ benatherton.com
+item http://mirror.cyberbits.eu/archlinux/ cyberbits.eu
+item http://mirror.ibcp.fr/pub/archlinux/ ibcp.fr
+item http://mirror.lastmikoi.net/archlinux/ lastmikoi.net
+item http://archlinux.mailtunnel.eu/ mailtunnel.eu
+item http://mir.archlinux.fr/ mir.archlinux.fr
+item http://mirrors.celianvdb.fr/archlinux/ mirrors.celianvdb.fr
+item http://arch.nimukaito.net/ nimukaito.net
+item http://mirror.oldsql.cc/archlinux/ oldsql.cc
+item http://archlinux.mirrors.ovh.net/archlinux/ ovh.net
+item http://archlinux.polymorf.fr/ polymorf.fr
+item http://archlinux.rezopole.net/ rezopole.net
+item http://mirrors.standaloneinstaller.com/archlinux/ standaloneinstaller.com
+item http://ftp.u-strasbg.fr/linux/distributions/archlinux/ u-strasbg.fr
+item http://mirroir.wptheme.fr/archlinux/ wptheme.fr
+item http://arch.yourlabs.org/ yourlabs.org
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_GE
+set countryname Georgia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.grena.ge/ grena.ge
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_DE
+set countryname Germany
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.agdsn.de/pub/mirrors/archlinux/ agdsn.de
+item http://artfiles.org/archlinux.org/ artfiles.org
+item http://mirror.chaoticum.net/arch/ chaoticum.net
+item http://mirror.checkdomain.de/archlinux/ checkdomain.de
+item http://mirror.clientvps.com/archlinux/ clientvps.com
+item http://mirror.f4st.host/archlinux/ f4st.host
+item http://ftp.fau.de/archlinux/ fau.de
+item http://www.gutscheindrache.com/mirror/archlinux/ gutscheindrache.com
+item http://ftp.gwdg.de/pub/linux/archlinux/ gwdg.de
+item http://archlinux.honkgong.info/ honkgong.info
+item http://ftp.hosteurope.de/mirror/ftp.archlinux.org/ hosteurope.de
+item http://ftp-stud.hs-esslingen.de/pub/Mirrors/archlinux/ hs-esslingen.de
+item http://archlinux.mirror.iphh.net/ iphh.net
+item http://arch.jensgutermuth.de/ jensgutermuth.de
+item http://mirror.kumi.systems/archlinux/ kumi.systems
+item http://mirror.fra10.de.leaseweb.net/archlinux/ leaseweb.net
+item http://mirror.metalgamer.eu/archlinux/ metalgamer.eu
+item http://mirror.mikrogravitation.org/archlinux/ mikrogravitation.org
+item http://mirrors.n-ix.net/archlinux/ n-ix.net
+item http://mirror.netcologne.de/archlinux/ netcologne.de
+item http://mirrors.niyawe.de/archlinux/ niyawe.de
+item http://mirror.orbit-os.com/archlinux/ orbit-os.com
+item http://packages.oth-regensburg.de/archlinux/ oth-regensburg.de
+item http://phinau.de/arch/ phinau.de
+item http://ftp.halifax.rwth-aachen.de/archlinux/ rwth-aachen.de
+item http://linux.rz.rub.de/archlinux/ rz.rub.de
+item http://mirror.satis-faction.de/archlinux/ satis-faction.de
+item http://mirror.selfnet.de/archlinux/ selfnet.de
+item http://ftp.spline.inf.fu-berlin.de/mirrors/archlinux/ spline.inf.fu-berlin.de
+item http://archlinux.thaller.ws/ thaller.ws
+item http://ftp.tu-chemnitz.de/pub/linux/archlinux/ tu-chemnitz.de
+item http://mirror.ubrco.de/archlinux/ ubrco.de
+item http://ftp.uni-bayreuth.de/linux/archlinux/ uni-bayreuth.de
+item http://ftp.uni-hannover.de/archlinux/ uni-hannover.de
+item http://ftp.uni-kl.de/pub/linux/archlinux/ uni-kl.de
+item http://mirror.united-gameserver.de/archlinux/ united-gameserver.de
+item http://ftp.wrz.de/pub/archlinux/ wrz.de
+item http://mirror.wtnet.de/arch/ wtnet.de
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_GR
+set countryname Greece
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.cc.uoc.gr/mirrors/linux/archlinux/ cc.uoc.gr
+item http://mirrors.myaegean.gr/linux/archlinux/ myaegean.gr
+item http://ftp.ntua.gr/pub/linux/archlinux/ ntua.gr
+item http://ftp.otenet.gr/linux/archlinux/ otenet.gr
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_HK
+set countryname Hong Kong
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror-hk.koddos.net/archlinux/ koddos.net
+item http://hkg.mirror.rackspace.com/archlinux/ rackspace.com
+item http://mirror.xtom.com.hk/archlinux/ xtom.com.hk
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_HU
+set countryname Hungary
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.energia.mta.hu/pub/mirrors/ftp.archlinux.org/ energia.mta.hu
+item http://quantum-mirror.hu/mirrors/pub/archlinux/ quantum-mirror.hu
+item http://nova.quantum-mirror.hu/mirrors/pub/archlinux/ quantum-mirror.hu
+item http://super.quantum-mirror.hu/mirrors/pub/archlinux/ quantum-mirror.hu
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IS
+set countryname Iceland
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.system.is/arch/ system.is
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IN
+set countryname India
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.cse.iitk.ac.in/archlinux/ cse.iitk.ac.in
+item http://mirrors.piconets.webwerks.in/archlinux-mirror/ piconets.webwerks.in
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_ID
+set countryname Indonesia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.gi.co.id/archlinux/ gi.co.id
+item http://mirror.labkom.id/archlinux/ labkom.id
+item http://mirror.papua.go.id/archlinux/ papua.go.id
+item http://mirror.poliwangi.ac.id/archlinux/ poliwangi.ac.id
+item http://suro.ubaya.ac.id/archlinux/ suro.ubaya.ac.id
+item http://mirror.telkomuniversity.ac.id/archlinux/ telkomuniversity.ac.id
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IR
+set countryname Iran
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://repo.iut.ac.ir/repo/archlinux/ iut.ac.ir
+item http://mirror.nak-mci.ir/arch/ nak-mci.ir
+item http://mirror.rasanegar.com/archlinux/ rasanegar.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IE
+set countryname Ireland
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.heanet.ie/mirrors/ftp.archlinux.org/ heanet.ie
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IL
+set countryname Israel
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.isoc.org.il/pub/archlinux/ isoc.org.il
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_IT
+set countryname Italy
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.garr.it/archlinux/ garr.it
+item http://mirrors.prometeus.net/archlinux/ prometeus.net
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_JP
+set countryname Japan
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.cat.net/archlinux/ cat.net
+item http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/ ftp.tsukuba.wide.ad.jp
+item http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/ jaist.ac.jp
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_KZ
+set countryname Kazakhstan
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.hoster.kz/archlinux/ hoster.kz
+item http://mirror.ps.kz/archlinux/ ps.kz
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_KE
+set countryname Kenya
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.liquidtelecom.com/ liquidtelecom.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_LV
+set countryname Latvia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.koyanet.lv/archlinux/ koyanet.lv
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_LT
+set countryname Lithuania
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.atviras.lt/archlinux/ atviras.lt
+item http://mirrors.ims.nksc.lt/archlinux/ ims.nksc.lt
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_LU
+set countryname Luxembourg
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.root.lu/ root.lu
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_MD
+set countryname Moldova
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.ihost.md/archlinux/ ihost.md
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_NL
+set countryname Netherlands
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.i3d.net/pub/archlinux/ i3d.net
+item http://mirror.koddos.net/archlinux/ koddos.net
+item http://arch.mirrors.lavatech.top/ lavatech.top
+item http://mirror.ams1.nl.leaseweb.net/archlinux/ leaseweb.net
+item http://archlinux.mirror.liteserver.nl/ liteserver.nl
+item http://mirror.lyrahosting.com/archlinux/ lyrahosting.com
+item http://mirror.neostrada.nl/archlinux/ neostrada.nl
+item http://ftp.nluug.nl/os/Linux/distr/archlinux/ nluug.nl
+item http://archlinux.mirror.pcextreme.nl/ pcextreme.nl
+item http://mirror.serverion.com/archlinux/ serverion.com
+item http://ftp.snt.utwente.nl/pub/os/linux/archlinux/ snt.utwente.nl
+item http://mirror.tarellia.net/distr/archlinux/ tarellia.net
+item http://archlinux.mirror.wearetriple.com/ wearetriple.com
+item http://mirror-archlinux.webruimtehosting.nl/ webruimtehosting.nl
+item http://mirrors.xtom.nl/archlinux/ xtom.nl
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_NC
+set countryname New Caledonia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.lagoon.nc/pub/archlinux/ lagoon.nc
+item http://archlinux.nautile.nc/archlinux/ nautile.nc
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_NZ
+set countryname New Zealand
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.fsmg.org.nz/archlinux/ fsmg.org.nz
+item http://mirror.smith.geek.nz/archlinux/ smith.geek.nz
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_MK
+set countryname North Macedonia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://arch.softver.org.mk/archlinux/ arch.softver.org.mk
+item http://mirror.onevip.mk/archlinux/ onevip.mk
+item http://mirror.t-home.mk/archlinux/ t-home.mk
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_NO
+set countryname Norway
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.archlinux.no/ archlinux.no
+item http://archlinux.uib.no/ archlinux.uib.no
+item http://mirror.neuf.no/archlinux/ neuf.no
+item http://mirror.terrahost.no/linux/archlinux/ terrahost.no
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_PK
+set countryname Pakistan
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://repo.inara.pk/archlinux/ inara.pk
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_PY
+set countryname Paraguay
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.mirror.py/archlinux/ mirror.py
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_PH
+set countryname Philippines
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.rise.ph/archlinux/ rise.ph
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_PL
+set countryname Poland
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.icm.edu.pl/pub/Linux/dist/archlinux/ icm.edu.pl
+item http://arch.midov.pl/arch/ midov.pl
+item http://arch.nixlab.pl/ nixlab.pl
+item http://mirror.onet.pl/pub/mirrors/archlinux/ onet.pl
+item http://piotrkosoft.net/pub/mirrors/ftp.archlinux.org/ piotrkosoft.net
+item http://mirror.sfinae.tech/pub/mirrors/archlinux/ sfinae.tech
+item http://ftp.vectranet.pl/archlinux/ vectranet.pl
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_PT
+set countryname Portugal
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://glua.ua.pt/pub/archlinux/ glua.ua.pt
+item http://ftp.rnl.tecnico.ulisboa.pt/pub/archlinux/ rnl.tecnico.ulisboa.pt
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_RO
+set countryname Romania
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.chroot.ro/archlinux/ chroot.ro
+item http://mirror.efect.ro/archlinux/ efect.ro
+item http://archlinux.mirrors.linux.ro/ linux.ro
+item http://mirrors.m247.ro/archlinux/ m247.ro
+item http://mirrors.nav.ro/archlinux/ nav.ro
+item http://mirrors.nxthost.com/archlinux/ nxthost.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_RU
+set countryname Russia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.powernet.com.ru/archlinux/ powernet.com.ru
+item http://mirror.rol.ru/archlinux/ rol.ru
+item http://mirror.truenetwork.ru/archlinux/ truenetwork.ru
+item http://mirror.yandex.ru/archlinux/ yandex.ru
+item http://archlinux.zepto.cloud/ zepto.cloud
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_RS
+set countryname Serbia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.pmf.kg.ac.rs/archlinux/ pmf.kg.ac.rs
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_SG
+set countryname Singapore
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.0x.sg/archlinux/ 0x.sg
+item http://mirror.aktkn.sg/archlinux/ aktkn.sg
+item http://mirror.guillaumea.fr/archlinux/ guillaumea.fr
+item http://mirror.nus.edu.sg/archlinux/ nus.edu.sg
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_SK
+set countryname Slovakia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.lnx.sk/pub/linux/archlinux/ lnx.sk
+item http://tux.rainside.sk/archlinux/ rainside.sk
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_SI
+set countryname Slovenia
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archimonde.ts.si/archlinux/ archimonde.ts.si
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_ZA
+set countryname South Africa
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.za.mirror.allworldit.com/archlinux/ allworldit.com
+item http://za.mirror.archlinux-br.org/ archlinux-br.org
+item http://mirror.is.co.za/mirror/archlinux.org/ is.co.za
+item http://arch.opnmirror.co.za/ opnmirror.co.za
+item http://mirrors.urbanwave.co.za/archlinux/ urbanwave.co.za
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_KR
+set countryname South Korea
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.anigil.com/archlinux/ anigil.com
+item http://ftp.harukasan.org/archlinux/ harukasan.org
+item http://ftp.lanet.kr/pub/archlinux/ lanet.kr
+item http://mirror.premi.st/archlinux/ premi.st
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_ES
+set countryname Spain
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.librelabucm.org/archlinux/ librelabucm.org
+item http://ftp.rediris.es/mirror/archlinux/ rediris.es
+item http://sharing.thelinuxsect.com/archlinux/ thelinuxsect.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_SE
+set countryname Sweden
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.acc.umu.se/mirror/archlinux/ acc.umu.se
+item http://archlinux.dynamict.se/ dynamict.se
+item http://ftpmirror.infania.net/mirror/archlinux/ infania.net
+item http://ftp.lysator.liu.se/pub/archlinux/ lysator.liu.se
+item http://ftp.myrveln.se/pub/linux/archlinux/ myrveln.se
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_CH
+set countryname Switzerland
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://pkg.adfinis.com/archlinux/ adfinis.com
+item http://mirror.puzzle.ch/archlinux/ mirror.puzzle.ch
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_TW
+set countryname Taiwan
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.ccns.ncku.edu.tw/archlinux/ ccns.ncku.edu.tw
+item http://archlinux.cs.nctu.edu.tw/ nctu.edu.tw
+item http://shadow.ind.ntou.edu.tw/archlinux/ ntou.edu.tw
+item http://ftp.tku.edu.tw/Linux/ArchLinux/ tku.edu.tw
+item http://ftp.yzu.edu.tw/Linux/archlinux/ yzu.edu.tw
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_TH
+set countryname Thailand
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirror.kku.ac.th/archlinux/ kku.ac.th
+item http://mirror2.totbb.net/archlinux/ totbb.net
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_TR
+set countryname Turkey
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://ftp.linux.org.tr/archlinux/ linux.org.tr
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_UA
+set countryname Ukraine
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.ip-connect.vn.ua/ ip-connect.vn.ua
+item http://mirror.mirohost.net/archlinux/ mirohost.net
+item http://mirrors.nix.org.ua/linux/archlinux/ nix.org.ua
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_GB
+set countryname United Kingdom
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://archlinux.uk.mirror.allworldit.com/archlinux/ allworldit.com
+item http://mirror.bytemark.co.uk/archlinux/ bytemark.co.uk
+item http://mirrors.gethosted.online/archlinux/ gethosted.online
+item http://mirrors.manchester.m247.com/arch-linux/ manchester.m247.com
+item http://mirrors.melbourne.co.uk/archlinux/ melbourne.co.uk
+item http://www.mirrorservice.org/sites/ftp.archlinux.org/ mirrorservice.org
+item http://mirror.netweaver.uk/archlinux/ netweaver.uk
+item http://lon.mirror.rackspace.com/archlinux/ rackspace.com
+item http://arch.serverspace.co.uk/arch/ serverspace.co.uk
+item http://archlinux.mirrors.uk2.net/ uk2.net
+item http://mirrors.ukfast.co.uk/sites/archlinux.org/ ukfast.co.uk
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_US
+set countryname United States
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://mirrors.acm.wpi.edu/archlinux/ acm.wpi.edu
+item http://mirrors.advancedhosters.com/archlinux/ advancedhosters.com
+item http://mirrors.aggregate.org/archlinux/ aggregate.org
+item http://ca.us.mirror.archlinux-br.org/ archlinux-br.org
+item http://il.us.mirror.archlinux-br.org/ archlinux-br.org
+item http://archlinux.surlyjake.com/archlinux/ archlinux.surlyjake.com
+item http://mirror.arizona.edu/archlinux/ arizona.edu
+item http://arlm.tyzoid.com/ arlm.tyzoid.com
+item http://mirrors.cat.pdx.edu/archlinux/ cat.pdx.edu
+item http://mirror.cc.columbia.edu/pub/linux/archlinux/ cc.columbia.edu
+item http://arch.mirror.constant.com/ constant.com
+item http://mirror.cs.pitt.edu/archlinux/ cs.pitt.edu
+item http://mirror.cs.vt.edu/pub/ArchLinux/ cs.vt.edu
+item http://distro.ibiblio.org/archlinux/ distro.ibiblio.org
+item http://mirror.es.its.nyu.edu/archlinux/ es.its.nyu.edu
+item http://mirror.ette.biz/archlinux/ ette.biz
+item http://mirrors.gigenet.com/archlinux/ gigenet.com
+item http://www.gtlib.gatech.edu/pub/archlinux/ gtlib.gatech.edu
+item http://mirror.dc02.hackingand.coffee/arch/ hackingand.coffee
+item http://arch.hu.fo/archlinux/ hu.fo
+item http://repo.ialab.dsu.edu/archlinux/ ialab.dsu.edu
+item http://mirrors.kernel.org/archlinux/ kernel.org
+item http://mirror.dal10.us.leaseweb.net/archlinux/ leaseweb.net
+item http://mirror.sfo12.us.leaseweb.net/archlinux/ leaseweb.net
+item http://mirror.wdc1.us.leaseweb.net/archlinux/ leaseweb.net
+item http://mirror.mia11.us.leaseweb.net/archlinux/ leaseweb.net
+item http://mirrors.liquidweb.com/archlinux/ liquidweb.com
+item http://mirror.lty.me/archlinux/ lty.me
+item http://mirrors.lug.mtu.edu/archlinux/ lug.mtu.edu
+item http://mirror.math.princeton.edu/pub/archlinux/ math.princeton.edu
+item http://mirror.metrocast.net/archlinux/ metrocast.net
+item http://mirror.kaminski.io/archlinux/ mirror.kaminski.io
+item http://iad.mirrors.misaka.one/archlinux/ misaka.one
+item http://repo.miserver.it.umich.edu/archlinux/ miserver.it.umich.edu
+item http://mirrors.mit.edu/archlinux/ mit.edu
+item http://mirrors.ocf.berkeley.edu/archlinux/ ocf.berkeley.edu
+item http://archmirror1.octyl.net/ octyl.net
+item http://ftp.osuosl.org/pub/archlinux/ osuosl.org
+item http://arch.mirrors.pair.com/ pair.com
+item http://dfw.mirror.rackspace.com/archlinux/ rackspace.com
+item http://ord.mirror.rackspace.com/archlinux/ rackspace.com
+item http://iad.mirror.rackspace.com/archlinux/ rackspace.com
+item http://plug-mirror.rcac.purdue.edu/archlinux/ rcac.purdue.edu
+item http://mirrors.rit.edu/archlinux/ rit.edu
+item http://mirrors.rutgers.edu/archlinux/ rutgers.edu
+item http://mirror.siena.edu/archlinux/ siena.edu
+item http://arch.mirror.square-r00t.net/ square-r00t.net
+item http://mirror.stephen304.com/archlinux/ stephen304.com
+item http://ftp.sudhip.com/archlinux/ sudhip.com
+item http://mirror.pit.teraswitch.com/archlinux/ teraswitch.com
+item http://mirror.umd.edu/archlinux/ umd.edu
+item http://mirror.vtti.vt.edu/archlinux/ vtti.vt.edu
+item http://mirrors.xmission.com/archlinux/ xmission.com
+item http://mirrors.xtom.com/archlinux/ xtom.com
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:select_mirror_url_VN
+set countryname Vietnam
+
+menu Arch Linux Netboot: Select Mirror
+item back back
+item
+item --gap Available mirrors in ${countryname}
+item http://f.archlinuxvn.org/archlinux/ archlinuxvn.org
+item http://mirror.bizflycloud.vn/archlinux/ bizflycloud.vn
+
+choose selected || goto select_mirror_country
+iseq ${selected} back && goto select_mirror_country ||
+set mirrorurl ${selected}
+goto main
+
+
+:set_options
+echo -n Boot options: ${} && read extrabootoptions ||
+goto main
+
+:boot
+echo Booting Arch Linux x86_64 ${release} from ${mirrorurl}
+echo
+kernel ${mirrorurl}iso/${release}/arch/boot/x86_64/vmlinuz-linux || goto failed_download
+imgverify vmlinuz-linux ${mirrorurl}iso/${release}/arch/boot/x86_64/vmlinuz-linux.ipxe.sig || goto failed_verify
+initrd ${mirrorurl}iso/${release}/arch/boot/amd-ucode.img || goto failed_download
+imgverify amd-ucode.img ${mirrorurl}iso/${release}/arch/boot/amd-ucode.img.ipxe.sig || goto failed_verify
+initrd ${mirrorurl}iso/${release}/arch/boot/intel-ucode.img || goto failed_download
+imgverify intel-ucode.img ${mirrorurl}iso/${release}/arch/boot/intel-ucode.img.ipxe.sig || goto failed_verify
+initrd ${mirrorurl}iso/${release}/arch/boot/x86_64/initramfs-linux.img || goto failed_download
+imgverify initramfs-linux.img ${mirrorurl}iso/${release}/arch/boot/x86_64/initramfs-linux.img.ipxe.sig || goto failed_verify
+imgargs vmlinuz-linux initrd=amd-ucode.img initrd=intel-ucode.img initrd=initramfs-linux.img archiso_http_srv=${mirrorurl}iso/${release}/ archisobasedir=arch verify=y ${extrabootoptions}
+boot || goto failed_boot
+
+:failed_download
+echo
+echo Failed to download a file.
+goto failed
+
+:failed_verify
+echo
+echo Failed to verify a file.
+goto failed
+
+:failed_boot
+echo
+echo Boot failed.
+goto failed
+
+:failed
+echo Press a key to return to the menu.
+prompt
+imgfree
+goto main
