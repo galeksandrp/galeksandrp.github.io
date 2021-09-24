@@ -99,7 +99,7 @@ travistestInit() {
     arch-chroot "$EXT_PARTITION_MOUNTPOINT" sudo -u "$ARCH_LOGIN" -i git clone "$TRAVISTEST_GIT_URL"
     arch-chroot "$EXT_PARTITION_MOUNTPOINT" sudo -u "$ARCH_LOGIN" -i bash -c 'cd travistest && git checkout docker-arch-xl2tpd-forward'
 
-    echo "router * $PPP_PASSWORD *" > "$EXT_PARTITION_MOUNTPOINT/$ARCH_HOME_PATH/travistest/pap-secrets"
+    echo "router * $PPP_PASSWORD 192.168.101.2" > "$EXT_PARTITION_MOUNTPOINT/$ARCH_HOME_PATH/travistest/pap-secrets"
     ln -s 'pap-secrets' "$EXT_PARTITION_MOUNTPOINT/$ARCH_HOME_PATH/travistest/chap-secrets"
 }
 
