@@ -112,6 +112,28 @@ reflectorInit() {
     arch-chroot "$EXT_PARTITION_MOUNTPOINT" systemctl enable reflector.timer
 }
 
+iptablesInit() {
+    iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+    iptables -A INPUT -p udp --dport 22 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 51820 -j ACCEPT
+    iptables -A INPUT -p udp --dport 51820 -j ACCEPT
+    iptables -A INPUT -i wg0 -j ACCEPT
+    iptables -P INPUT DROP
+
+    iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    iptables -A FORWARD -i wg0 -j ACCEPT
+    iptables -P FORWARD DROP
+    # iptables -P FORWARD ACCEPT
+
+    echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/30-ipforward.conf
+}
+
+ip6tablesInit() {
+    echo 'net.ipv6.conf.default.forwarding=1' > /etc/sysctl.d/30-ipforward6.conf
+    echo 'net.ipv6.conf.all.forwarding=1' >> /etc/sysctl.d/30-ipforward6.conf
+}
+
 full() {
     ROOT_PASSWORD="$1"
     PPP_PASSWORD="$2"
