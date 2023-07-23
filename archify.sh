@@ -130,6 +130,8 @@ iptablesInit() {
     iptables -t nat -A PREROUTING -i wg0 -p tcp --dport 443 -j REDIRECT --to-ports 9040
     iptables -t nat -A PREROUTING -i wg0 -p udp --dport 443 -j REDIRECT --to-ports 9040
 
+    iptables-save -f /etc/iptables/iptables.rules
+
     echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/30-ipforward.conf
 }
 
