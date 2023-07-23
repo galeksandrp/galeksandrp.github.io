@@ -126,9 +126,12 @@ iptablesInit() {
     iptables -P FORWARD DROP
 
     iptables -t nat -A PREROUTING -i wg0 -p tcp --dport 80 -j REDIRECT --to-ports 9040
-    iptables -t nat -A PREROUTING -i wg0 -p udp --dport 80 -j REDIRECT --to-ports 9040
     iptables -t nat -A PREROUTING -i wg0 -p tcp --dport 443 -j REDIRECT --to-ports 9040
-    iptables -t nat -A PREROUTING -i wg0 -p udp --dport 443 -j REDIRECT --to-ports 9040
+    #iptables -t nat -A PREROUTING -i wg0 -p udp --dport 80 -j REDIRECT --to-ports 9040
+    #iptables -t nat -A PREROUTING -i wg0 -p udp --dport 443 -j REDIRECT --to-ports 9040
+
+    iptables -t mangle -A FORWARD -i wg0 -o eth0 -j MARK --set-mark 0xAA
+    iptables -t nat -A POSTROUTING -i wg0 -m mark --mark 0xAA -o eth0 -j MASQUERADE
 
     iptables-save -f /etc/iptables/iptables.rules
 
