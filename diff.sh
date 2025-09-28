@@ -1,4 +1,4 @@
-diff --color <(cat << EOF
+diff --color <(cat << DELIM
 adduser
 amd64-microcode
 apparmor
