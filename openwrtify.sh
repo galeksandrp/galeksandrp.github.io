@@ -3,7 +3,7 @@
 wrtCreate() {
   STORAGE="$1"
 
-  TEMPLATE_URL='https://images.linuxcontainers.org/images/openwrt/24.10/amd64/default/20260211_11:57/rootfs.tar.xz'
+  TEMPLATE_URL='https://images.linuxcontainers.org/images/openwrt/25.12/amd64/default/20260317_11:57/rootfs.tar.xz'
   OS_TEMPLATE="/var/lib/vz/template/cache/rootfs.tar.xz"
 
   CT_NUMBER="$(pvesh get /cluster/nextid)"
